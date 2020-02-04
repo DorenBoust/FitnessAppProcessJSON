@@ -23,12 +23,16 @@ import android.widget.Toast;
 import com.airbnb.lottie.LottieAnimationView;
 import com.example.fitnessapp.MainActivity;
 import com.example.fitnessapp.R;
+import com.example.fitnessapp.keys.KeysFirebaseStore;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 public class LoginAniFragment extends Fragment {
@@ -120,7 +124,7 @@ public class LoginAniFragment extends Fragment {
                     if (task.isSuccessful()) {
                         Intent intent = new Intent(getContext(), MainActivity.class);
                         startActivity(intent);
-                        //TODO:Cant adding finish(); = ask why
+                        getActivity().onBackPressed();
 
 
                     } else {
@@ -138,5 +142,6 @@ public class LoginAniFragment extends Fragment {
 
         }
     }
+
 
 }

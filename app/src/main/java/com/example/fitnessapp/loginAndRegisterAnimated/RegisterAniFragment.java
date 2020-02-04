@@ -26,6 +26,7 @@ import android.widget.Toast;
 import com.airbnb.lottie.LottieAnimationView;
 import com.example.fitnessapp.R;
 import com.example.fitnessapp.keys.KeysFirebaseStore;
+import com.example.fitnessapp.user.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
@@ -40,6 +41,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -136,7 +138,7 @@ public class RegisterAniFragment extends Fragment {
                 @Override
                 public void onChanged(String s) {
 
-                    //validation Integration code (if the json empty it mean that not have user on wordpress
+                    //validation Integration code (if the json empty it mean that not have user on wordpress)
                     intagrationCode = s;
                     if (intagrationCode.equals("[]")){
                         etIntegrationCode.setError("קוד התממשקות לא תקין");
@@ -146,7 +148,7 @@ public class RegisterAniFragment extends Fragment {
 
                     validationField();
 
-                    //dusplay btn register again
+                    //display btn register again
                     Animation animation = AnimationUtils.loadAnimation(getContext(), R.anim.faidin);
                     btnRegister.setAnimation(animation);
                     btnRegister.setVisibility(View.VISIBLE);
@@ -159,29 +161,7 @@ public class RegisterAniFragment extends Fragment {
 
                     //if not have any error its mean that can made auth at firebase
                     if (Objects.equals(etEmail.getError(), null) && Objects.equals(etPass.getError(), null) && Objects.equals(etPassValidation.getError(), null) && Objects.equals(etIntegrationCode.getError(), null)){
-                        fAuth.createUserWithEmailAndPassword(email,pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                //if success go to login screen
-                                if (task.isSuccessful()){
-                                    Toast.makeText(getContext(), "ההרשמה בוצעה בהצלחה!", Toast.LENGTH_SHORT).show();
-
-                                    userID = fAuth.getUid();
-                                    DocumentReference documentReference = fStore.collection(KeysFirebaseStore.COLLECTION_USER).document(userID);
-                                    Map<String, Object> user = new HashMap<>();
-                                    user.put(KeysFirebaseStore.EMAIL, email);
-                                    user.put(KeysFirebaseStore.INTEGRATION_CODE, integrationCode);
-                                    documentReference.set(user);
-
-
-                                    getFragmentManager().beginTransaction().
-                                            setCustomAnimations(R.anim.enter_top_to_bottom,R.anim.exite_bottom_to_top,R.anim.enter_bottom_to_top,R.anim.exite_top_to_bottom).
-                                            replace(R.id.mFragment, new LoginAniFragment()).commit();
-                                } else {
-                                    etEmail.setError("המייל כבר קיים במערכת");
-                                }
-                            }
-                        });
+                        firebaseIntegration(email,pass,integrationCode);
                     }
 
 
@@ -277,6 +257,33 @@ public class RegisterAniFragment extends Fragment {
         }
 
 
+    }
+
+    private void firebaseIntegration(String email, String pass, String integrationCode){
+        fAuth.createUserWithEmailAndPassword(email,pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                //if success go to login screen
+                if (task.isSuccessful()){
+                    Toast.makeText(getContext(), "ההרשמה בוצעה בהצלחה!", Toast.LENGTH_SHORT).show();
+
+                    userID = fAuth.getUid();
+                    DocumentReference documentReference = fStore.collection(KeysFirebaseStore.COLLECTION_USER).document(userID);
+                    Map<String, Object> user = new HashMap<>();
+                    user.put(KeysFirebaseStore.EMAIL, email);
+                    user.put(KeysFirebaseStore.INTEGRATION_CODE, integrationCode);
+                    user.put(KeysFirebaseStore.USER_OBJECT, new ArrayList<>());
+                    documentReference.set(user);
+
+
+                    getFragmentManager().beginTransaction().
+                            setCustomAnimations(R.anim.enter_top_to_bottom,R.anim.exite_bottom_to_top,R.anim.enter_bottom_to_top,R.anim.exite_top_to_bottom).
+                            replace(R.id.mFragment, new LoginAniFragment()).commit();
+                } else {
+                    etEmail.setError("המייל כבר קיים במערכת");
+                }
+            }
+        });
     }
 
 }

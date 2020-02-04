@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.Animation;
@@ -15,6 +16,7 @@ import com.example.fitnessapp.intro.FirstIntroFragment;
 import com.example.fitnessapp.intro.FourthIntroFragment;
 import com.example.fitnessapp.intro.SecIntroFragment;
 import com.example.fitnessapp.intro.ThirdIntroFragment;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +39,10 @@ public class IntroActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_intro);
 
+        //control on intro to showing just one time
+        SharedPreferences preferences = getSharedPreferences("intro", MODE_PRIVATE);
+        boolean firstStart = preferences.getBoolean("firstStart", true);
+
         getSupportFragmentManager().beginTransaction().replace(R.id.introMFragment, new FirstIntroFragment()).commit();
 
         btnNext = findViewById(R.id.intro_btn_next);
@@ -50,8 +56,7 @@ public class IntroActivity extends AppCompatActivity {
         fragments.add(new FourthIntroFragment());
 
 
-
-        btnNext.setOnClickListener(v->{
+        btnNext.setOnClickListener(v -> {
             btnNextSetup();
         });
 
@@ -59,11 +64,11 @@ public class IntroActivity extends AppCompatActivity {
             btnBackSetup();
         });
 
-        btnSkip.setOnClickListener(v->{
+        btnSkip.setOnClickListener(v -> {
             btnSkipSetup();
         });
 
-        btnStart.setOnClickListener(v->{
+        btnStart.setOnClickListener(v -> {
             btnSkipSetup();
         });
     }
@@ -130,6 +135,7 @@ public class IntroActivity extends AppCompatActivity {
         Intent loginIntent = new Intent(this, LogActivity.class);
         startActivity(loginIntent);
         overridePendingTransition(R.anim.enter_right_to_left, R.anim.exit_right_to_left);
+
     }
 
 }

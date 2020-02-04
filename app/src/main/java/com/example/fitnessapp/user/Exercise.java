@@ -1,15 +1,15 @@
 package com.example.fitnessapp.user;
 
 public class Exercise {
-    String exName;
-    String sets;
-    String repitition;
-    String rest;
-    String notes;
-    String image;
-    String videoLink;
+    private String exName;
+    private int sets;
+    private String repitition;
+    private long rest;
+    private String notes;
+    private String image;
+    private String videoLink;
 
-    public Exercise(String exName, String sets, String repitition, String rest, String notes, String image, String videoLink) {
+    public Exercise(String exName, int sets, String repitition, long rest, String notes, String image, String videoLink) {
         this.exName = exName;
         this.sets = sets;
         this.repitition = repitition;
@@ -25,10 +25,10 @@ public class Exercise {
     public void setExName(String exName) {
         this.exName = exName;
     }
-    public String getSets() {
+    public int getSets() {
         return sets;
     }
-    public void setSets(String sets) {
+    public void setSets(int sets) {
         this.sets = sets;
     }
     public String getRepitition() {
@@ -37,10 +37,10 @@ public class Exercise {
     public void setRepitition(String repitition) {
         this.repitition = repitition;
     }
-    public String getRest() {
+    public long getRest() {
         return rest;
     }
-    public void setRest(String rest) {
+    public void setRest(long rest) {
         this.rest = rest;
     }
     public String getNotes() {
