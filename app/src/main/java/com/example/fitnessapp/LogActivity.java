@@ -24,10 +24,12 @@ public class LogActivity extends AppCompatActivity {
 
         //if user are login open main activity if not open login fragment
         if (fAuth.getCurrentUser() != null){
-            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+            overridePendingTransition(R.anim.faidin, R.anim.faidout);
             finish();
         } else {
-            getSupportFragmentManager().beginTransaction().replace(R.id.mFragment, new LoginAniFragment()).commit();
+            getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.faidin,R.anim.faidout).replace(R.id.mFragment, new LoginAniFragment()).commit(); //TODO:NOT WORKING!!
         }
 
     }

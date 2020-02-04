@@ -39,10 +39,6 @@ public class IntroActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_intro);
 
-        //control on intro to showing just one time
-        SharedPreferences preferences = getSharedPreferences("intro", MODE_PRIVATE);
-        boolean firstStart = preferences.getBoolean("firstStart", true);
-
         getSupportFragmentManager().beginTransaction().replace(R.id.introMFragment, new FirstIntroFragment()).commit();
 
         btnNext = findViewById(R.id.intro_btn_next);
@@ -134,7 +130,7 @@ public class IntroActivity extends AppCompatActivity {
     private void btnSkipSetup(){
         Intent loginIntent = new Intent(this, LogActivity.class);
         startActivity(loginIntent);
-        overridePendingTransition(R.anim.enter_right_to_left, R.anim.exit_right_to_left);
+        overridePendingTransition(R.anim.faidin, R.anim.faidout);
 
     }
 

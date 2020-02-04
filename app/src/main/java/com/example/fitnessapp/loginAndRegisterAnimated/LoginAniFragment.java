@@ -74,6 +74,7 @@ public class LoginAniFragment extends Fragment {
             getFragmentManager().beginTransaction().
                     setCustomAnimations(R.anim.enter_top_to_bottom,R.anim.exite_bottom_to_top,R.anim.enter_bottom_to_top,R.anim.exite_top_to_bottom).
                     replace(R.id.mFragment, new RegisterAniFragment()).commit();
+
         });
 
         return v;
@@ -124,6 +125,7 @@ public class LoginAniFragment extends Fragment {
                     if (task.isSuccessful()) {
                         Intent intent = new Intent(getContext(), MainActivity.class);
                         startActivity(intent);
+
                         getActivity().onBackPressed();
 
 
